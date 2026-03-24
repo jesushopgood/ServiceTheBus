@@ -13,7 +13,6 @@
 
 # IDE/editor
 .vs/
-.vscode/
 *.code-workspace
 
 # Logs and diagnostics
