@@ -1,0 +1,69 @@
+# Build output
+**/[Bb]in/
+**/[Oo]bj/
+**/[Dd]ebug/
+**/[Rr]elease/
+**/out/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userprefs
+
+# IDE/editor
+.vs/
+.vscode/
+*.code-workspace
+
+# Logs and diagnostics
+*.log
+*.tlog
+*.tmp
+*.temp
+*.cache
+
+# Test output
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# NuGet / packages
+*.nupkg
+*.snupkg
+packages/
+
+# Dotnet tools and local secrets
+.dotnet/
+secrets.json
+appsettings.Local.json
+appsettings.*.local.json
+
+# Node (if used by tooling)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Docker local overrides
+docker-compose.override.yml
+**/docker-compose.override.yml
+
+# Azurite/local storage artifacts
+__azurite_db_*.json
+__queuestorage__/
+
+# OS files
+.DS_Store
+Thumbs.db

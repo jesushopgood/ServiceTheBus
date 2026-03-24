@@ -1,0 +1,139 @@
+﻿{
+    "id":  "/subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourceGroups/rg-servicethebus/providers/Microsoft.App/containerapps/orderservice-func",
+    "identity":  {
+                     "type":  "UserAssigned",
+                     "userAssignedIdentities":  {
+                                                    "/subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourcegroups/rg-servicethebus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/orderservice-func-pull-id":  {
+                                                                                                                                                                                                                                     "clientId":  "80100ebf-53fb-45f1-8501-338164bc247b",
+                                                                                                                                                                                                                                     "principalId":  "a130d227-84c9-47ed-bd1e-ebd2b5c0b702"
+                                                                                                                                                                                                                                 }
+                                                }
+                 },
+    "location":  "UK South",
+    "name":  "orderservice-func",
+    "properties":  {
+                       "configuration":  {
+                                             "activeRevisionsMode":  "Single",
+                                             "dapr":  null,
+                                             "identitySettings":  [
+
+                                                                  ],
+                                             "ingress":  null,
+                                             "maxInactiveRevisions":  0,
+                                             "registries":  [
+                                                                {
+                                                                    "identity":  "/subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourceGroups/rg-servicethebus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/orderservice-func-pull-id",
+                                                                    "passwordSecretRef":  "",
+                                                                    "server":  "servicethebusacrmn2h9o.azurecr.io",
+                                                                    "username":  ""
+                                                                }
+                                                            ],
+                                             "runtime":  null,
+                                             "secrets":  [
+                                                             {
+                                                                 "name":  "servicebus-connection"
+                                                             }
+                                                         ],
+                                             "service":  null
+                                         },
+                       "customDomainVerificationId":  "67CBFC68A4C34E378751B1C37D1257B91B4A0E7B7083C5D9E49A36A4F3B905CC",
+                       "delegatedIdentities":  [
+
+                                               ],
+                       "environmentId":  "/subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourceGroups/rg-servicethebus/providers/Microsoft.App/managedEnvironments/cae-servicethebus",
+                       "eventStreamEndpoint":  "https://uksouth.azurecontainerapps.dev/subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourceGroups/rg-servicethebus/containerApps/orderservice-func/eventstream",
+                       "latestReadyRevisionName":  "orderservice-func--0000003",
+                       "latestRevisionFqdn":  "",
+                       "latestRevisionName":  "orderservice-func--0000003",
+                       "managedEnvironmentId":  "/subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourceGroups/rg-servicethebus/providers/Microsoft.App/managedEnvironments/cae-servicethebus",
+                       "outboundIpAddresses":  [
+                                                   "145.133.69.171"
+                                               ],
+                       "provisioningState":  "Succeeded",
+                       "runningStatus":  "Running",
+                       "template":  {
+                                        "containers":  [
+                                                           {
+                                                               "env":  [
+                                                                           {
+                                                                               "name":  "AzureServiceBus__ConnectionString",
+                                                                               "secretRef":  "servicebus-connection"
+                                                                           },
+                                                                           {
+                                                                               "name":  "AzureServiceBus__TopicName",
+                                                                               "value":  "orders-topic"
+                                                                           },
+                                                                           {
+                                                                               "name":  "AzureServiceBus__SupplierQuotesQueueName",
+                                                                               "value":  "supplier-quotes"
+                                                                           },
+                                                                           {
+                                                                               "name":  "MessageProcessing__Mode",
+                                                                               "value":  "Function"
+                                                                           },
+                                                                           {
+                                                                               "name":  "FUNCTIONS_WORKER_RUNTIME",
+                                                                               "value":  "dotnet-isolated"
+                                                                           }
+                                                                       ],
+                                                               "image":  "servicethebusacrmn2h9o.azurecr.io/orderservice-func:20260318-103635",
+                                                               "name":  "orderservice-func",
+                                                               "probes":  [
+
+                                                                          ],
+                                                               "resources":  {
+                                                                                 "cpu":  0.5,
+                                                                                 "ephemeralStorage":  "2Gi",
+                                                                                 "memory":  "1Gi"
+                                                                             }
+                                                           }
+                                                       ],
+                                        "initContainers":  null,
+                                        "revisionSuffix":  "",
+                                        "scale":  {
+                                                      "cooldownPeriod":  300,
+                                                      "maxReplicas":  10,
+                                                      "minReplicas":  0,
+                                                      "pollingInterval":  30,
+                                                      "rules":  [
+                                                                    {
+                                                                        "custom":  {
+                                                                                       "auth":  [
+                                                                                                    {
+                                                                                                        "secretRef":  "servicebus-connection",
+                                                                                                        "triggerParameter":  "connection"
+                                                                                                    }
+                                                                                                ],
+                                                                                       "metadata":  {
+                                                                                                        "messageCount":  "1",
+                                                                                                        "namespace":  "sb-servicethebus",
+                                                                                                        "queueName":  "supplier-quotes"
+                                                                                                    },
+                                                                                       "type":  "azure-servicebus"
+                                                                                   },
+                                                                        "name":  "servicebus-queue-rule"
+                                                                    }
+                                                                ]
+                                                  },
+                                        "serviceBinds":  null,
+                                        "terminationGracePeriodSeconds":  null,
+                                        "volumes":  [
+
+                                                    ]
+                                    },
+                       "workloadProfileName":  null
+                   },
+    "resourceGroup":  "rg-servicethebus",
+    "systemData":  {
+                       "createdAt":  "2026-03-17T19:02:16.9390333",
+                       "createdBy":  "phopgood2112@outlook.com",
+                       "createdByType":  "User",
+                       "lastModifiedAt":  "2026-03-18T11:02:56.6716929",
+                       "lastModifiedBy":  "phopgood2112@outlook.com",
+                       "lastModifiedByType":  "User"
+                   },
+    "tags":  {
+
+             },
+    "type":  "Microsoft.App/containerApps"
+}

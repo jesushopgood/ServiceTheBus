@@ -1,0 +1,318 @@
+terraform {
+  required_version = ">= 1.6.0"
+
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 4.20"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6"
+    }
+  }
+}
+
+provider "azurerm" {
+  features {}
+}
+
+locals {
+  project_name = "servicethebus"
+  location     = "uksouth"
+
+  container_apps = {
+    orderservice_api = {
+      name                     = "orderservice-api"
+      service_bus_section      = "AzureServiceBus"
+      supplier_code            = null
+      orders_subscription_name = null
+      products_csv_path        = null
+      expose_http              = true
+      processing_mode          = "Function"
+    }
+    suppliereng_api = {
+      name                     = "suppliereng-api"
+      service_bus_section      = "SupplierServiceBus"
+      supplier_code            = "ENG"
+      orders_subscription_name = "orders-eng"
+      products_csv_path        = "products.csv"
+      expose_http              = true
+      processing_mode          = "Function"
+    }
+    suppliersco_api = {
+      name                     = "suppliersco-api"
+      service_bus_section      = "SupplierServiceBus"
+      supplier_code            = "SCO"
+      orders_subscription_name = "orders-sco"
+      products_csv_path        = "products.csv"
+      expose_http              = true
+      processing_mode          = "Function"
+    }
+    supplierwal_api = {
+      name                     = "supplierwal-api"
+      service_bus_section      = "SupplierServiceBus"
+      supplier_code            = "WAL"
+      orders_subscription_name = "orders-wal"
+      products_csv_path        = "products.csv"
+      expose_http              = true
+      processing_mode          = "Function"
+    }
+    orderservice_function = {
+      name                     = "orderservice-func"
+      service_bus_section      = "AzureServiceBus"
+      supplier_code            = null
+      orders_subscription_name = null
+      products_csv_path        = null
+      expose_http              = false
+      processing_mode          = "Function"
+    }
+    suppliereng_function = {
+      name                     = "suppliereng-func"
+      service_bus_section      = "SupplierServiceBus"
+      supplier_code            = "ENG"
+      orders_subscription_name = "orders-eng"
+      products_csv_path        = "products.csv"
+      expose_http              = false
+      processing_mode          = "Function"
+    }
+    suppliersco_function = {
+      name                     = "suppliersco-func"
+      service_bus_section      = "SupplierServiceBus"
+      supplier_code            = "SCO"
+      orders_subscription_name = "orders-sco"
+      products_csv_path        = "products.csv"
+      expose_http              = false
+      processing_mode          = "Function"
+    }
+    supplierwal_function = {
+      name                     = "supplierwal-func"
+      service_bus_section      = "SupplierServiceBus"
+      supplier_code            = "WAL"
+      orders_subscription_name = "orders-wal"
+      products_csv_path        = "products.csv"
+      expose_http              = false
+      processing_mode          = "Function"
+    }
+  }
+
+  container_app_service_bus_env = {
+    for app_key, app in local.container_apps :
+    app_key => app.service_bus_section == "AzureServiceBus" ? [
+      {
+        name        = "AzureServiceBus__ConnectionString"
+        secret_name = "servicebus-connection"
+      },
+      {
+        name  = "AzureServiceBus__TopicName"
+        value = azurerm_servicebus_topic.orders.name
+      },
+      {
+        name  = "AzureServiceBus__SupplierQuotesQueueName"
+        value = azurerm_servicebus_queue.supplier_quotes.name
+      },
+      {
+        name  = "MessageProcessing__Mode"
+        value = app.processing_mode
+      }
+      ] : [
+      {
+        name        = "SupplierServiceBus__ConnectionString"
+        secret_name = "servicebus-connection"
+      },
+      {
+        name  = "SupplierServiceBus__OrdersTopicName"
+        value = azurerm_servicebus_topic.orders.name
+      },
+      {
+        name  = "SupplierServiceBus__OrdersSubscriptionName"
+        value = app.orders_subscription_name
+      },
+      {
+        name  = "SupplierServiceBus__SupplierQuotesQueueName"
+        value = azurerm_servicebus_queue.supplier_quotes.name
+      },
+      {
+        name  = "SupplierServiceBus__SupplierCode"
+        value = app.supplier_code
+      },
+      {
+        name  = "SupplierServiceBus__ProductsCsvPath"
+        value = app.products_csv_path
+      },
+      {
+        name  = "MessageProcessing__Mode"
+        value = app.processing_mode
+      }
+    ]
+  }
+
+  container_app_runtime_env = {
+    for app_key, app in local.container_apps :
+    app_key => app.expose_http ? [] : [
+      {
+        name  = "FUNCTIONS_WORKER_RUNTIME"
+        value = "dotnet-isolated"
+      }
+    ]
+  }
+}
+
+variable "container_app_image_placeholder" {
+  type        = string
+  description = "Bootstrap image used only to satisfy Container App creation. Replace later via deployment script."
+  default     = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
+}
+
+variable "enable_acr_registry_on_apps" {
+  type        = bool
+  description = "Set to true to enable ACR authentication on container apps and assign AcrPull roles."
+  default     = false
+}
+
+resource "random_string" "acr_suffix" {
+  length  = 6
+  special = false
+  upper   = false
+}
+
+resource "azurerm_resource_group" "rg" {
+  name     = "rg-${local.project_name}"
+  location = local.location
+}
+
+resource "azurerm_log_analytics_workspace" "law" {
+  name                = "law-${local.project_name}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+}
+
+resource "azurerm_container_app_environment" "cae" {
+  name                       = "cae-${local.project_name}"
+  location                   = azurerm_resource_group.rg.location
+  resource_group_name        = azurerm_resource_group.rg.name
+  log_analytics_workspace_id = azurerm_log_analytics_workspace.law.id
+}
+
+resource "azurerm_container_registry" "acr" {
+  name                = "${local.project_name}acr${random_string.acr_suffix.result}"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  sku                 = "Basic"
+  admin_enabled       = false
+}
+
+resource "azurerm_servicebus_namespace" "sb" {
+  name                = "sb-${local.project_name}"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Standard"
+}
+
+resource "azurerm_servicebus_topic" "orders" {
+  name         = "orders-topic"
+  namespace_id = azurerm_servicebus_namespace.sb.id
+}
+
+resource "azurerm_servicebus_subscription" "orders_eng" {
+  name               = "orders-eng"
+  topic_id           = azurerm_servicebus_topic.orders.id
+  max_delivery_count = 10
+}
+
+resource "azurerm_servicebus_subscription" "orders_sco" {
+  name               = "orders-sco"
+  topic_id           = azurerm_servicebus_topic.orders.id
+  max_delivery_count = 10
+}
+
+resource "azurerm_servicebus_subscription" "orders_wal" {
+  name               = "orders-wal"
+  topic_id           = azurerm_servicebus_topic.orders.id
+  max_delivery_count = 10
+}
+
+resource "azurerm_servicebus_queue" "supplier_quotes" {
+  name         = "supplier-quotes"
+  namespace_id = azurerm_servicebus_namespace.sb.id
+}
+
+resource "azurerm_servicebus_namespace_authorization_rule" "apps" {
+  name         = "apps-access"
+  namespace_id = azurerm_servicebus_namespace.sb.id
+
+  listen = true
+  send   = true
+  manage = false
+}
+
+resource "azurerm_container_app" "apps" {
+  for_each = local.container_apps
+
+  name                         = each.value.name
+  resource_group_name          = azurerm_resource_group.rg.name
+  container_app_environment_id = azurerm_container_app_environment.cae.id
+  revision_mode                = "Single"
+
+  secret {
+    name  = "servicebus-connection"
+    value = azurerm_servicebus_namespace_authorization_rule.apps.primary_connection_string
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  dynamic "registry" {
+    for_each = var.enable_acr_registry_on_apps ? [1] : []
+    content {
+      server   = azurerm_container_registry.acr.login_server
+      identity = "system"
+    }
+  }
+
+  dynamic "ingress" {
+    for_each = each.value.expose_http ? [1] : []
+    content {
+      external_enabled = true
+      # Bootstrap image listens on 80; deploy script switches API apps to 8080 with real images.
+      target_port = 80
+
+      traffic_weight {
+        latest_revision = true
+        percentage      = 100
+      }
+    }
+  }
+
+  template {
+    container {
+      name   = each.value.name
+      image  = var.container_app_image_placeholder
+      cpu    = 0.25
+      memory = "0.5Gi"
+
+      dynamic "env" {
+        for_each = concat(
+          local.container_app_service_bus_env[each.key],
+          local.container_app_runtime_env[each.key]
+        )
+        content {
+          name        = env.value.name
+          value       = try(env.value.value, null)
+          secret_name = try(env.value.secret_name, null)
+        }
+      }
+    }
+  }
+}
+
+resource "azurerm_role_assignment" "container_app_acrpull" {
+  for_each = var.enable_acr_registry_on_apps ? azurerm_container_app.apps : {}
+
+  scope                = azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = each.value.identity[0].principal_id
+}

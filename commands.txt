@@ -1,0 +1,99 @@
+# Commands From PSReadLine History
+# Scan date: 2026-03-10
+# Source: Up-arrow history file from PSReadLine
+# Filter: commands starting with `az` or `docker`
+
+az account list --output table    # List Azure subscriptions/accounts.
+az account set --subscription "00b0a178-1c6b-4d65-b0ea-905704218461"    # Set the active Azure subscription.
+az account set --subscription 5bfc16e5-e844-44db-9930-da33fceccd9d    # Set the active Azure subscription.
+az account show    # Show current Azure account context.
+az acr login --name dualserviceacr    # Authenticate Docker client to Azure Container Registry.
+az acr manifest list-metadata \    # List image manifest metadata in ACR.
+az acr manifest list-metadata --name dualserviceacr --repository dualservice-serviceleft    # List image manifest metadata in ACR.
+az acr manifest list-metadata --registry dualserviceacr --name dualservice-serviceleft    # List image manifest metadata in ACR.
+az acr repository show-manifests --name dualserviceacr --repository dualservice-serviceleft    # List repository manifests in ACR.
+az acr repository show-manifests --name dualserviceacr --repository dualservice-serviceright    # List repository manifests in ACR.
+az acr repository show-tags --name dualserviceacr --repository dualservice-serviceleft    # List tags for an ACR repository.
+az acr repository show-tags --name dualserviceacr --repository dualservice-serviceright    # List tags for an ACR repository.
+az acr repository show-tags --name dualserviceacr --repository dualservice-servicerightaz acr repository show-tags --name dualserviceacr --repository dualservice-serviceright    # List tags for an ACR repository.
+az acr show --name dualserviceacr --query loginServer -o tsv    # Show Azure Container Registry details.
+az containerapp identity assign -n service-right -g dualservice-rg --system-assigned    # Assign managed identity to a Container App.
+az containerapp revision list \    # List Container App revisions.
+az containerapp revision list --name demo-webapi --resource-group rg-demo_plh --output table    # List Container App revisions.
+az containerapp revision list --name demo-webapi --resource-group rg-demo-plh --output table    # List Container App revisions.
+az containerapp revision list --name service-left --resource-group dualservice-rg --query "[].name" -o tsv    # List Container App revisions.
+az containerapp revision show --name service-left --resource-group dualservice-rg --revision service-left--0000001 --query "properties.template.containers[0].image" -o tsv    # Show details for a specific Container App revision.
+az containerapp show --name service-left --resource-group dualservice-rg --query "properties.template.containers[0].image" -o tsv    # Show Container App configuration and state.
+az containerapp update    # Update a Container App configuration or image.
+az containerapp update \    # Update a Container App configuration or image.
+az containerapp update --name service-left --resource-group dualservice-rg --image dualserviceacr.azurecr.io/dualservice-serviceleft:latest    # Update a Container App configuration or image.
+az containerapp update --name service-left --resource-group dualservice-rg --image dualserviceacr.azurecr.io/dualservice-service-left:latest    # Update a Container App configuration or image.
+az containerapp update --name service-right --resource-group dualservice-rg --image dualserviceacr.azurecr.io/dualservice-serviceright:latest    # Update a Container App configuration or image.
+az containerapp update --name service-right --resource-group dualservice-rg --set template.containers[0].image=dualserviceacr.azurecr.io/dualservice-serviceright:latest    # Update a Container App configuration or image.
+az login    # Authenticate to Azure.
+az login --2a1c5b47-ce6b-4525-9d05-d1065d6bbb53    # Authenticate to Azure.
+az login --scope https://graph.microsoft.com//.default    # Authenticate to Azure.
+az login --tenant 2a1c5b47-ce6b-4525-9d05-d1065d6bbb53    # Authenticate to Azure.
+az login --tenant 4edfd539-8600-4f6f-8a50-8a0a7d24f99e    # Authenticate to Azure.
+az provider register --namespace Microsoft.App    # Register an Azure resource provider namespace.
+az provider show -n Microsoft.App    # Show Azure resource provider registration info.
+az role assignment create    # Create an Azure RBAC role assignment.
+az role assignment create --assignee 8b9f160e-cbee-412f-b91b-de8aad544daa --role AcrPull --scope /subscriptions/00b0a178-1c6b-4d65-b0ea-905704218461/resourceGroups/dualservice-rg/providers/Microsoft.ContainerRegistry/registries/dualserviceacr    # Create an Azure RBAC role assignment.
+az role assignment list    # List Azure RBAC role assignments.
+docker build -t customer-service    # Build a Docker image from a Dockerfile.
+docker build -t customer-service .    # Build a Docker image from a Dockerfile.
+docker build -t dualserviceacr.azurecr.io/dualservice-serviceright:latest    # Build a Docker image from a Dockerfile.
+docker build -t dualserviceacr.azurecr.io/dualservice-serviceright:latest .    # Build a Docker image from a Dockerfile.
+docker build -t dualservice-serviceright:latest .    # Build a Docker image from a Dockerfile.
+docker build -t peterhopgood2112/storefrontuk    # Build a Docker image from a Dockerfile.
+docker build -t peterhopgood2112/storefrontuk .    # Build a Docker image from a Dockerfile.
+docker builder prune    # Remove unused Docker builder cache.
+docker compose build    # Build services defined in docker-compose.
+docker compose build --nocache    # Build services defined in docker-compose.
+docker compose build --noc-ache    # Build services defined in docker-compose.
+docker compose build --no-cache    # Build services defined in docker-compose.
+docker compose up    # Start services from docker-compose configuration.
+docker compose up --build    # Start services from docker-compose configuration.
+docker images    # List local Docker images.
+docker images --filter=reference="dual*"    # List local Docker images.
+docker info    # Display Docker daemon/system information.
+docker inspect sql-server    # Show low-level details of a Docker object.
+docker logs d8feb7c8eaff    # View logs from a container.
+docker logs peterhopgood2112/storefrontuk    # View logs from a container.
+docker logs storefrontuk-sql-server_customer-api    # View logs from a container.
+docker ps    # List running containers.
+docker push dualserviceacr.azurecr.io/dualservice-serviceleft:latest    # Push a Docker image to a registry.
+docker push dualserviceacr.azurecr.io/dualservice-serviceright:latest    # Push a Docker image to a registry.
+docker push dualserviceacr/dualservice-serviceleft:latest    # Push a Docker image to a registry.
+docker run -it --rm customer-api-image-name sh    # Create and run a container from an image.
+docker run -p 8080:80 -d peterhopgood2112/StoreFromt    # Create and run a container from an image.
+docker run -p 8080:80 -d peterhopgood2112/storefrontuk    # Create and run a container from an image.
+docker run --rm mcr.microsoft.com/dotnet/sdk:8.0 ping api.nuget.org    # Create and run a container from an image.
+docker tag dualservice-serviceleft:latest dualserviceacr.azurecr.io/dualservice-serviceleft:latest    # Create a tag (alias) for a Docker image.
+docker tag dualservice-serviceleft:latest dualserviceacr/dualservice-serviceleft:latest    # Create a tag (alias) for a Docker image.
+docker tag dualservice-serviceright:latest dualserviceacr.azurecr.io/dualservice-serviceright:latest    # Create a tag (alias) for a Docker image.
+docker tag dualservice-serviceright:latest dualserviceacr/dualservice-serviceright:latest    # Create a tag (alias) for a Docker image.
+docker tag serviceleft:latest dualserviceacr.azurecr.io/dualservice-serviceleft:latest    # Create a tag (alias) for a Docker image.
+docker tag serviceright:latest dualserviceacr.azurecr.io/dualservice-serviceright:latest    # Create a tag (alias) for a Docker image.
+docker --version    # Show Docker CLI version.
+docker volume inspect sqlvolume    # Show details of a Docker volume.
+docker volume inspect storefront_sql-data    # Show details of a Docker volume.
+docker volume rm storefrontuk_sql-data    # Remove one or more Docker volumes.
+docker-compose build    # Run legacy docker-compose command for multi-container apps.
+docker-compose build --nocache    # Run legacy docker-compose command for multi-container apps.
+docker-compose build --no-cache    # Run legacy docker-compose command for multi-container apps.
+docker-compose -build --nocache    # Run legacy docker-compose command for multi-container apps.
+docker-compose build sql-server    # Run legacy docker-compose command for multi-container apps.
+docker-compose down    # Run legacy docker-compose command for multi-container apps.
+docker-compose down -v    # Run legacy docker-compose command for multi-container apps.
+docker-compose -f docker-compose.yml build    # Run legacy docker-compose command for multi-container apps.
+docker-compose -f docker-compose.yml up    # Run legacy docker-compose command for multi-container apps.
+docker-compose up    # Run legacy docker-compose command for multi-container apps.
+docker-compose up -- build --no-cache    # Run legacy docker-compose command for multi-container apps.
+docker-compose up build    # Run legacy docker-compose command for multi-container apps.
+docker-compose up -build    # Run legacy docker-compose command for multi-container apps.
+docker-compose up --build    # Run legacy docker-compose command for multi-container apps.
+docker-compose up --build -d    # Run legacy docker-compose command for multi-container apps.
+docker-compose up build --nocache    # Run legacy docker-compose command for multi-container apps.
+docker-compose up --build --no-cache    # Run legacy docker-compose command for multi-container apps.
+docker-compose up -d    # Run legacy docker-compose command for multi-container apps.

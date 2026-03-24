@@ -1,0 +1,60 @@
+using OrderService.Infrastructure.Persistence.Entities;
+
+namespace OrderService.Infrastructure.Persistence.Seeding;
+
+public static class ProductSeedData
+{
+    public static readonly ProductEntity[] All =
+    [
+        new ProductEntity { Id = 1, Sku = "SK1", Description = "Dinner Plate", BasePrice = 12.50m },
+        new ProductEntity { Id = 2, Sku = "SK2", Description = "Side Plate", BasePrice = 8.25m },
+        new ProductEntity { Id = 3, Sku = "SK3", Description = "Soup Bowl", BasePrice = 9.40m },
+        new ProductEntity { Id = 4, Sku = "SK4", Description = "Salad Bowl", BasePrice = 11.30m },
+        new ProductEntity { Id = 5, Sku = "SK5", Description = "Pasta Bowl", BasePrice = 10.95m },
+        new ProductEntity { Id = 6, Sku = "SK6", Description = "Serving Platter", BasePrice = 24.00m },
+        new ProductEntity { Id = 7, Sku = "SK7", Description = "Cake Stand", BasePrice = 28.75m },
+        new ProductEntity { Id = 8, Sku = "SK8", Description = "Bread Basket", BasePrice = 14.20m },
+        new ProductEntity { Id = 9, Sku = "SK9", Description = "Cheese Board", BasePrice = 19.90m },
+        new ProductEntity { Id = 10, Sku = "SK10", Description = "Cheese Grater", BasePrice = 7.80m },
+        new ProductEntity { Id = 11, Sku = "SK11", Description = "Carving Knife", BasePrice = 21.60m },
+        new ProductEntity { Id = 12, Sku = "SK12", Description = "Chef Tongs", BasePrice = 6.95m },
+        new ProductEntity { Id = 13, Sku = "SK13", Description = "Serving Spoon", BasePrice = 5.40m },
+        new ProductEntity { Id = 14, Sku = "SK14", Description = "Slotted Spoon", BasePrice = 5.85m },
+        new ProductEntity { Id = 15, Sku = "SK15", Description = "Soup Ladle", BasePrice = 6.50m },
+        new ProductEntity { Id = 16, Sku = "SK16", Description = "Sauce Ladle", BasePrice = 5.75m },
+        new ProductEntity { Id = 17, Sku = "SK17", Description = "Whisk", BasePrice = 4.60m },
+        new ProductEntity { Id = 18, Sku = "SK18", Description = "Mixing Bowl", BasePrice = 13.10m },
+        new ProductEntity { Id = 19, Sku = "SK19", Description = "Measuring Jug", BasePrice = 8.60m },
+        new ProductEntity { Id = 20, Sku = "SK20", Description = "Measuring Cups Set", BasePrice = 9.99m },
+        new ProductEntity { Id = 21, Sku = "SK21", Description = "Chopping Board", BasePrice = 15.40m },
+        new ProductEntity { Id = 22, Sku = "SK22", Description = "Pastry Brush", BasePrice = 3.95m },
+        new ProductEntity { Id = 23, Sku = "SK23", Description = "Rolling Pin", BasePrice = 11.50m },
+        new ProductEntity { Id = 24, Sku = "SK24", Description = "Baking Tray", BasePrice = 16.20m },
+        new ProductEntity { Id = 25, Sku = "SK25", Description = "Roasting Pan", BasePrice = 27.40m },
+        new ProductEntity { Id = 26, Sku = "SK26", Description = "Oven Mitt Set", BasePrice = 9.20m },
+        new ProductEntity { Id = 27, Sku = "SK27", Description = "Apron", BasePrice = 12.00m },
+        new ProductEntity { Id = 28, Sku = "SK28", Description = "Napkin Holder", BasePrice = 7.25m },
+        new ProductEntity { Id = 29, Sku = "SK29", Description = "Table Caddy", BasePrice = 10.10m },
+        new ProductEntity { Id = 30, Sku = "SK30", Description = "Water Pitcher", BasePrice = 18.30m },
+        new ProductEntity { Id = 31, Sku = "SK31", Description = "Coffee Pot", BasePrice = 22.45m },
+        new ProductEntity { Id = 32, Sku = "SK32", Description = "Tea Pot", BasePrice = 20.50m },
+        new ProductEntity { Id = 33, Sku = "SK33", Description = "Milk Frothing Jug", BasePrice = 8.40m },
+        new ProductEntity { Id = 34, Sku = "SK34", Description = "Sugar Dispenser", BasePrice = 6.70m },
+        new ProductEntity { Id = 35, Sku = "SK35", Description = "Salt Mill", BasePrice = 17.80m },
+        new ProductEntity { Id = 36, Sku = "SK36", Description = "Pepper Mill", BasePrice = 17.80m },
+        new ProductEntity { Id = 37, Sku = "SK37", Description = "Condiment Pump", BasePrice = 26.00m },
+        new ProductEntity { Id = 38, Sku = "SK38", Description = "Food Warmer Tray", BasePrice = 34.90m },
+        new ProductEntity { Id = 39, Sku = "SK39", Description = "Chafing Dish", BasePrice = 58.00m },
+        new ProductEntity { Id = 40, Sku = "SK40", Description = "Buffet Server", BasePrice = 63.50m },
+        new ProductEntity { Id = 41, Sku = "SK41", Description = "Insulated Beverage Urn", BasePrice = 72.25m },
+        new ProductEntity { Id = 42, Sku = "SK42", Description = "Juice Dispenser", BasePrice = 49.99m },
+        new ProductEntity { Id = 43, Sku = "SK43", Description = "Ice Bucket", BasePrice = 23.10m },
+        new ProductEntity { Id = 44, Sku = "SK44", Description = "Wine Cooler", BasePrice = 31.45m },
+        new ProductEntity { Id = 45, Sku = "SK45", Description = "Glass Rack", BasePrice = 29.80m },
+        new ProductEntity { Id = 46, Sku = "SK46", Description = "Cutlery Tray", BasePrice = 14.75m },
+        new ProductEntity { Id = 47, Sku = "SK47", Description = "Plate Rack", BasePrice = 18.85m },
+        new ProductEntity { Id = 48, Sku = "SK48", Description = "Storage Canister", BasePrice = 13.35m },
+        new ProductEntity { Id = 49, Sku = "SK49", Description = "Food Storage Container Set", BasePrice = 25.60m },
+        new ProductEntity { Id = 50, Sku = "SK50", Description = "Thermal Food Carrier", BasePrice = 88.90m }
+    ];
+}

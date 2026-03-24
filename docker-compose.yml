@@ -1,0 +1,103 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: orderservice-postgres
+    environment:
+      POSTGRES_DB: orderservice
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - orderservice-postgres-data:/var/lib/postgresql/data
+
+  orderservice-api:
+    image: orderservice-api:latest
+    build:
+      context: .
+      dockerfile: src/OrderService/OrderService.Api/Dockerfile
+    container_name: orderservice-api
+    depends_on:
+      - postgres
+    ports:
+      - "8081:80"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__OrderServiceDb: Host=postgres;Port=5432;Database=orderservice;Username=postgres;Password=postgres
+      MessageProcessing__Mode: Function
+      AzureServiceBus__ConnectionString: ${ASB_CONNECTION_STRING:-}
+      AzureServiceBus__TopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      AzureServiceBus__SupplierQuotesQueueName: ${ASB_SUPPLIER_QUOTES_QUEUE:-supplier-quotes}
+
+  orderservice-func:
+    image: orderservice-func:latest
+    build:
+      context: .
+      dockerfile: src/OrderService/OrderService.Functions/Dockerfile
+    container_name: orderservice-func
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__OrderServiceDb: Host=postgres;Port=5432;Database=orderservice;Username=postgres;Password=postgres
+      MessageProcessing__Mode: Function
+      AzureServiceBus__ConnectionString: ${ASB_CONNECTION_STRING:-}
+      AzureServiceBus__SupplierQuotesQueueName: ${ASB_SUPPLIER_QUOTES_QUEUE:-supplier-quotes}
+      AzureServiceBusConnectionString: ${ASB_CONNECTION_STRING:-}
+      AzureServiceBusSupplierQuotesQueueName: ${ASB_SUPPLIER_QUOTES_QUEUE:-supplier-quotes}
+
+  suppliereng-func:
+    image: suppliereng-func:latest
+    build:
+      context: .
+      dockerfile: src/SupplierENG/SupplierENG.Functions/Dockerfile
+    container_name: suppliereng-func
+    environment:
+      MessageProcessing__Mode: Function
+      SupplierServiceBus__ConnectionString: ${ASB_CONNECTION_STRING:-}
+      SupplierServiceBus__OrdersTopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      SupplierServiceBus__OrdersSubscriptionName: ${ASB_SUB_ENG:-orders-eng}
+      SupplierServiceBus__SupplierQuotesQueueName: ${ASB_SUPPLIER_QUOTES_QUEUE:-supplier-quotes}
+      SupplierServiceBusConnectionString: ${ASB_CONNECTION_STRING:-}
+      SupplierServiceBusOrdersTopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      SupplierServiceBusOrdersSubscriptionName: ${ASB_SUB_ENG:-orders-eng}
+      SupplierServiceBus__SupplierCode: ENG
+      SupplierServiceBus__ProductsCsvPath: ./products.csv
+
+  suppliersco-func:
+    image: suppliersco-func:latest
+    build:
+      context: .
+      dockerfile: src/SupplierSCO/SupplierSCO.Functions/Dockerfile
+    container_name: suppliersco-func
+    environment:
+      MessageProcessing__Mode: Function
+      SupplierServiceBus__ConnectionString: ${ASB_CONNECTION_STRING:-}
+      SupplierServiceBus__OrdersTopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      SupplierServiceBus__OrdersSubscriptionName: ${ASB_SUB_SCO:-orders-sco}
+      SupplierServiceBus__SupplierQuotesQueueName: ${ASB_SUPPLIER_QUOTES_QUEUE:-supplier-quotes}
+      SupplierServiceBusConnectionString: ${ASB_CONNECTION_STRING:-}
+      SupplierServiceBusOrdersTopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      SupplierServiceBusOrdersSubscriptionName: ${ASB_SUB_SCO:-orders-sco}
+      SupplierServiceBus__SupplierCode: SCO
+      SupplierServiceBus__ProductsCsvPath: ./products.csv
+
+  supplierwal-func:
+    image: supplierwal-func:latest
+    build:
+      context: .
+      dockerfile: src/SupplierWAL/SupplierWAL.Functions/Dockerfile
+    container_name: supplierwal-func
+    environment:
+      MessageProcessing__Mode: Function
+      SupplierServiceBus__ConnectionString: ${ASB_CONNECTION_STRING:-}
+      SupplierServiceBus__OrdersTopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      SupplierServiceBus__OrdersSubscriptionName: ${ASB_SUB_WAL:-orders-wal}
+      SupplierServiceBus__SupplierQuotesQueueName: ${ASB_SUPPLIER_QUOTES_QUEUE:-supplier-quotes}
+      SupplierServiceBusConnectionString: ${ASB_CONNECTION_STRING:-}
+      SupplierServiceBusOrdersTopicName: ${ASB_ORDERS_TOPIC:-orders-topic}
+      SupplierServiceBusOrdersSubscriptionName: ${ASB_SUB_WAL:-orders-wal}
+      SupplierServiceBus__SupplierCode: WAL
+      SupplierServiceBus__ProductsCsvPath: ./products.csv
+
+volumes:
+  orderservice-postgres-data:

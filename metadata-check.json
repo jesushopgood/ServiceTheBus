@@ -1,0 +1,23 @@
+[
+    {
+        "app":  "suppliereng-func",
+        "topicName":  "orders-topic",
+        "subscriptionName":  "orders-eng",
+        "namespace":  "sb-servicethebus",
+        "messageCount":  "1"
+    },
+    {
+        "app":  "suppliersco-func",
+        "topicName":  "orders-topic",
+        "subscriptionName":  "orders-sco",
+        "namespace":  "sb-servicethebus",
+        "messageCount":  "1"
+    },
+    {
+        "app":  "supplierwal-func",
+        "topicName":  "orders-topic",
+        "subscriptionName":  "orders-wal",
+        "namespace":  "sb-servicethebus",
+        "messageCount":  "1"
+    }
+]

@@ -1,0 +1,7 @@
+@hostAddress = http://localhost:5232
+
+GET {{hostAddress}}/api/ping?name=World
+Accept: application/json
+
+###
+
