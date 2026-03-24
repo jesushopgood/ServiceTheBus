@@ -3,6 +3,8 @@
 # Source: Up-arrow history file from PSReadLine
 # Filter: commands starting with `az` or `docker`
 
+# Here are a list of all the commands used from a session
+
 az account list --output table    # List Azure subscriptions/accounts.
 az account set --subscription "00b0a178-1c6b-4d65-b0ea-905704218461"    # Set the active Azure subscription.
 az account set --subscription 5bfc16e5-e844-44db-9930-da33fceccd9d    # Set the active Azure subscription.
